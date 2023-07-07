@@ -669,7 +669,7 @@ app.get('/search_filter3', async (req, res) => {
     }
     if(rs_id_start != '')
     {
-      where += ' AND PUBLIC.rs_rsinfo_land.rs_id < $' + (paramCount++);
+      where += ' AND PUBLIC.rs_rsinfo_land.rs_id <= $' + (paramCount++);
       values.push(`${rs_id_end}`);
     }
     //limit = `LIMIT $` + paramCount;
@@ -703,7 +703,7 @@ app.get('/search_filter3', async (req, res) => {
     }
     if(rs_id_start != '')
     {
-      where1 += ' AND PUBLIC.rs_rsinfo_bldg.rs_id < $' + (paramCount++);
+      where1 += ' AND PUBLIC.rs_rsinfo_bldg.rs_id <= $' + (paramCount++);
       values1.push(`${rs_id_end}`);
     }
     
