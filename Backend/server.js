@@ -662,15 +662,11 @@ app.get('/search_filter3', async (req, res) => {
     var limit = '';
     var values = [];
     var paramCount = 1;
-    if(rs_id_start != '')
+    if(rs_id_start != '' && rs_id_end != '')
     {
-      where += ' AND PUBLIC.rs_rsinfo_land.rs_id >= $' + (paramCount++);
-      values.push(`${rs_id_start}`);
-    }
-    if(rs_id_start != '')
-    {
-      where += ' AND PUBLIC.rs_rsinfo_land.rs_id <= $' + (paramCount++);
-      values.push(`${rs_id_end}`);
+      where += ' AND PUBLIC.rs_rsinfo_land.rs_id = $' + (paramCount++);
+      var rs_id = `${rs_id_start}` + '-' + `${rs_id_end}`;
+      values.push(rs_id);
     }
     //limit = `LIMIT $` + paramCount;
     //values.push(100);
@@ -678,7 +674,7 @@ app.get('/search_filter3', async (req, res) => {
     const query = `
       SELECT DISTINCT
         1 result_type,
-        PUBLIC.rs_rspos_land.rs_id,
+        PUBLIC.rs_rsinfo_land.rs_id,
         CONCAT(PUBLIC.vw_mt_parcel.cms_juukyo_name, ' ', PUBLIC.vw_mt_parcel.chiban_num) full_name,
         PUBLIC.vw_mt_parcel.chiban_num chiban_num,
         rep_pnt_lat1,
@@ -691,26 +687,22 @@ app.get('/search_filter3', async (req, res) => {
         LEFT JOIN PUBLIC.vw_mt_parcel 
           ON PUBLIC.vw_mt_parcel.prc_id = PUBLIC.rs_rsinfo_land.prc_id 
       WHERE ` + where + ` AND PUBLIC.vw_mt_parcel.cms_juukyo_name IS NOT NULL AND rep_pnt_lat1 IS NOT NULL AND rep_pnt_lon1 IS NOT NULL ` + limit;
-
+    
     var where1 = '1=1';
     var limit1 = '';
     var values1 = [];
     var paramCount = 1;
-    if(rs_id_start != '')
+    if(rs_id_start != '' && rs_id_end != '')
     {
-      where1 += ' AND PUBLIC.rs_rsinfo_bldg.rs_id >= $' + (paramCount++);
-      values1.push(`${rs_id_start}`);
-    }
-    if(rs_id_start != '')
-    {
-      where1 += ' AND PUBLIC.rs_rsinfo_bldg.rs_id <= $' + (paramCount++);
-      values1.push(`${rs_id_end}`);
+      where1 += ' AND PUBLIC.rs_rsinfo_bldg.rs_id = $' + (paramCount++);
+      var rs_id = `${rs_id_start}` + '-' + `${rs_id_end}`;
+      values1.push(rs_id);
     }
     
     const query1 = `
       SELECT DISTINCT
         2 result_type,
-        PUBLIC.rs_rspos_bldg.rs_id,
+        PUBLIC.rs_rsinfo_bldg.rs_id,
         CONCAT(PUBLIC.vw_mt_town.cms_juukyo_name, ' ', PUBLIC.vw_mt_town.cms_jukyo_num, ' ', PUBLIC.rs_rsinfo_bldg.bldg_name) full_name,
         rep_pnt_lat1,
         rep_pnt_lon1,
@@ -724,6 +716,7 @@ app.get('/search_filter3', async (req, res) => {
         LEFT JOIN PUBLIC.vw_mt_town 
           ON PUBLIC.vw_mt_parcel.lg_code = PUBLIC.vw_mt_town.lg_code AND PUBLIC.vw_mt_parcel.town_id = PUBLIC.vw_mt_town.town_id AND PUBLIC.vw_mt_parcel.rsdt_addr_flg = PUBLIC.vw_mt_town.rsdt_addr_flg
       WHERE ` + where1 + ` AND PUBLIC.vw_mt_town.cms_juukyo_name IS NOT NULL AND rep_pnt_lat1 IS NOT NULL AND rep_pnt_lon1 IS NOT NULL ` + limit1;
+
     var resData = [];
     {
       const { rows } = await pool.query(query, values);

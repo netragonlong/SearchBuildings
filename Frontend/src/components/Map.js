@@ -1422,7 +1422,7 @@ export default function Map({props}) {
                           <li className="md:w-[23.75%] max-md:w-[100%] whitespace-nowrap overflow-x-auto">
                             <ul>
                               <li className="px-1 py-1 overflow-ellipsis">
-                                {"0123456789-012"}
+                                {result.rs_id}
                               </li>
                             </ul>
                           </li>
