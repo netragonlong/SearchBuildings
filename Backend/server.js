@@ -334,7 +334,7 @@ app.get('/search1', async (req, res) => {
       //values.push(100);
       
       const query = `
-        SELECT
+        SELECT DISTINCT
           1 as result_type,
           PUBLIC.rs_rspos_land.rs_id,
           Concat(PUBLIC.vw_mt_parcel.full_name,' ', PUBLIC.vw_mt_parcel.chiban_num) full_name,
