@@ -222,8 +222,7 @@ app.listen(PORT, () => {
 
 
 
-
-
+/////////////  Backend for Search2_1 ////////////////
 app.get('/search1', async (req, res) => {
   if(typeof req.query.type == 'string')
   {
@@ -359,8 +358,7 @@ app.get('/search1', async (req, res) => {
   }
 });
 
-/////////////  Backend for Search2 ////////////////
-
+/////////////  Backend for Search2_2 ////////////////
 app.get('/search2', async (req, res) => {
   const pref_code = req.query.prefName; //like
   const lg_code = req.query.lgCode;     //equal
@@ -481,6 +479,8 @@ app.get('/search2', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
+/////////////  Backend for Search 1 ////////////////
 
 app.get('/search_filter1', async (req, res) => {
   const pref_code = req.query.prefName; //like
@@ -652,6 +652,8 @@ app.get('/search_filter1', async (req, res) => {
     res.status(500).send('Internal server error');
   }
 });
+
+/////////////  Backend for Search 3 ////////////////
 
 app.get('/search_filter3', async (req, res) => {
   const rs_id_start = req.query.rsIdStart;
